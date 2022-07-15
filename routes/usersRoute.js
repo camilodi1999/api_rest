@@ -33,7 +33,6 @@ const schema = Joi.object({
  * signup route
  */
 router.post('/signup', function(req, res, next) {
-
   /**
    * gets the body from de request
    */
@@ -79,7 +78,10 @@ router.post('/signup', function(req, res, next) {
                     const maxAge = 30*60*1000;
                     res.cookie('jwt',token, {httpOnly:true,maxAge})
                     res.send({...json})  ;
-                  })
+                  }).catch(err => {
+                      res.status(403)
+                      res.send({ status: 'error', message: err.message});
+                  });
     }
     
   })
@@ -142,7 +144,7 @@ router.post('/logout',function(req, res, next) {
 });
 
 router.post('/restaurants', checkToken,function(req, res, next) {
-    
+
 });
 
 module.exports = router;
