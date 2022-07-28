@@ -43,7 +43,6 @@ router.post('/signup', function(req, res, next) {
                     
                     // creates the user and generates the token for the user 
                     json = result.toJSON()
-                    console.log(json)
                     token = jwtUtils.generateJwt(result.email);
                     
                     // set the token into the cookie and sends the response
@@ -52,7 +51,7 @@ router.post('/signup', function(req, res, next) {
 
                   })
                   .catch(err => {
-                    
+                    // Error due to there is already an user with that email
                     if (err.name === 'SequelizeUniqueConstraintError'){
                       res.status(403)
                     res.send({ status: 'error', message: err.errors[0].message});
@@ -70,9 +69,7 @@ router.post('/signup', function(req, res, next) {
  */
 router.post('/login', function(req, res, next) {
 
-  /**
-   * gets the body from the request
-   */
+  // gets the body from the request
   let body = req.body
   
   //finds that the user exists
@@ -92,12 +89,12 @@ router.post('/login', function(req, res, next) {
         token = jwtUtils.generateJwt(body.email);
         
         json = response.toJSON();
-        // sends the response
-        const maxAge = 30*60*1000;
-        res.cookie('jwt',token, {httpOnly:true,maxAge})
+        
+        res.cookie('access_token',token, {httpOnly:true,maxAgeToken})
         res.send({...json})
       }else {
-            res.send({
+            
+            res.status(404).send({
             success: false,
             message: "Authentication failed",
             });
@@ -115,8 +112,8 @@ router.post('/login', function(req, res, next) {
  * Logout the user
  */
 router.post('/logout',function(req, res, next) {
-  // expires the jwt
-  res.cookie("jwt","",{ maxAge:0});
+  // expires and remove the token
+  res.cookie("accessed_token","",{ maxAge:0});
   res.send("User log out")
 });
 
