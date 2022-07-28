@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
-const config = require("./config");
+const config = require("../config");
 
 function checkToken(req, res, next) {
   //Gets the token from the request
-  let token = req.cookies['jwt']
+  let token = req.cookies['access_token']
 
   //Check if the token exists
   if (token) {

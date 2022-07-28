@@ -4,14 +4,20 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 /**
+ * depency to load the environment variables specified
+ * in the .env file
+ */
+require('dotenv').config()
+
+/**
  *  users route dependency
  */
-var usersRouter = require('./routes/usersRoute');
+const usersRouter = require('./routes/usersRoute');
 
 /**
  *  creates express app
  */
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());

@@ -1,86 +1,63 @@
 var express = require('express');
 var router = express.Router();
-const User = require("../models/user")
-const Joi = require('joi');
-const utils = require('../jwt/utils')
+const User = require("../models/user");
+const jwtUtils = require('../jwt/utils');
 const checkToken = require("../jwt/checkToken");
-/**
- * schema of the user class for validation
- */
-const schema = Joi.object({
-  name: Joi.string()
-      .min(3)
-      .max(30)
-      .required(),
-  phone: Joi.number()
-      .integer()
-      .required(),
-  age: Joi.number()
-        .integer()
-        .min(0)
-        .max(100)
-        .required(),
-  email: Joi.string()
-        .email()
-        .required(),
-  password: Joi.string()
-        .alphanum()
-        .min(8)
-        .max(20)
-});
+const userUtils = require('../utils/userUtils')
 
+
+const maxAgeToken = 30*1000*60; // 30 min in ms
 /**
  * signup route
  */
 router.post('/signup', function(req, res, next) {
-  /**
-   * gets the body from de request
-   */
+  // gets the body from de request
+   
   let body = req.body
   
-  /**
-   * validates the body according to the schema
-   */
-  const {error} = schema.validate(body);
+  // validates the body according to the schema
+  const {error} = userUtils.schema.validate(body);
   if(error){
-    return res.status(404).send(error.details[0].message);
+    return res.status(403).send(error.details[0].message);
   }
 
-  /**
-   * checks if there is a user with the same email
-   */
+  // checks if there is a user with the same email
   User.findOne({where:{ name: body.email }}).then((response)=>{
-  
+    
+
     if (response){
-      res.status(404).send("User already exists")
+      res.status(403).send("User already exists")
       
     }else{
-      /**
-      * generates the hash of the password
-      */
-      const password = utils.generateHash(body.password)
       
-      /**
-      * creates the user into the database
-      */
+      // generates the hash of the password
+      const password = jwtUtils.generateHash(body.password)
+      
+      // creates the user into the database
       User.create({name: body.name, 
                   phone:body.phone, 
                   age: body.age, 
                   email:body.email,
                   password})
                   .then((result) => {
-                    /**
-                     * generates the token for the user 
-                     */
+                    
+                    // creates the user and generates the token for the user 
                     json = result.toJSON()
-                    token = utils.generateJwt(result.email);
-                    // set the token age to 30 minutes
-                    const maxAge = 30*60*1000;
-                    res.cookie('jwt',token, {httpOnly:true,maxAge})
+                    console.log(json)
+                    token = jwtUtils.generateJwt(result.email);
+                    
+                    // set the token into the cookie and sends the response
+                    res.cookie('access_token',token, {httpOnly:true, maxAgeToken})
                     res.send({...json})  ;
-                  }).catch(err => {
+
+                  })
+                  .catch(err => {
+                    
+                    if (err.name === 'SequelizeUniqueConstraintError'){
                       res.status(403)
-                      res.send({ status: 'error', message: err.message});
+                    res.send({ status: 'error', message: err.errors[0].message});
+                    }
+                    else res.send({ status: 'error', message: err.message});
                   });
     }
     
@@ -104,7 +81,7 @@ router.post('/login', function(req, res, next) {
     // User exists
     if (response){
       // generate the hash of the password
-      const password = utils.generateHash(body.password)
+      const password = jwtUtils.generateHash(body.password)
 
       const passwordSaved = response.password
 
@@ -112,7 +89,7 @@ router.post('/login', function(req, res, next) {
       if ( password === passwordSaved) {
         //Authentication Succesful
         // generate the jwt token
-        token = utils.generateJwt(body.email);
+        token = jwtUtils.generateJwt(body.email);
         
         json = response.toJSON();
         // sends the response

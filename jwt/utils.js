@@ -1,18 +1,20 @@
 const jwt = require("jsonwebtoken");
-const config = require("./config");
-const {User} = require("../models/user")
+const config = require("../config");
 const crypto = require('crypto'); 
 
 
+
+
 /**
- * generate the jwt token from the email user
+ * generate the jwt token from the email user and it
+ * expires in 30m
  * @param {username} username of the user logged 
  * @returns token
  */
 
 function generateJwt(email) {
-
-    const token = jwt.sign({ email}, config.secret, { expiresIn: "24h" });
+    const secret_key = config.secret
+    const token = jwt.sign({ email}, secret_key, { expiresIn: "30m" });
     return token
   
 };
@@ -23,9 +25,7 @@ function generateJwt(email) {
  * @returns password hash
  */
 function generateHash(password) {
-    
-    
-    // Hashing user's salt and password with 1000 iterations, 
+    // Hashing user's password, 
     return crypto.createHash('sha256').update(password).digest("hex")
 };
 
