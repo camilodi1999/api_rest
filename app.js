@@ -14,6 +14,12 @@ require('dotenv').config()
  */
 const usersRouter = require('./routes/usersRoute');
 
+
+/**
+ *  restaurants route dependency
+ */
+ const restaurantsRouter = require('./routes/restaurantsRoute');
+
 /**
  *  creates express app
  */
@@ -29,6 +35,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * Creates the users Router
  */
-app.use('/', usersRouter);
+const userPath = '/user'
+app.use('/user', usersRouter);
+
+/**
+ * Creates the restaurants Router
+ */
+app.use('/restaurants', restaurantsRouter);
 
 module.exports = app;

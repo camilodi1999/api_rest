@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config");
 
+/**
+ * @returns an error if the user is not authenticated 
+ */
 function checkToken(req, res, next) {
+  
   //Gets the token from the request
   let token = req.cookies['access_token']
 
@@ -12,7 +16,7 @@ function checkToken(req, res, next) {
     jwt.verify(token, config.secret, (err, decoded) => {
       // validate the token
       if (err) {
-        return res.json({
+        return res.status(401).json({
           success: false,
           message: "Token is not valid",
         });
@@ -23,7 +27,7 @@ function checkToken(req, res, next) {
     });
   } else {
     //If there is no a token, throw an exception
-    return res.json({
+    return res.status(401).json({
       success: false,
       message: "Auth token is not supplied",
     });

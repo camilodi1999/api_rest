@@ -12,12 +12,12 @@ const userData = {
     password: "password"}
 
 
-const signupEndpoint = "/signup";
-const loginEndpoint = "/login";
-const logoutEndpoint = "/logout";
+const signupEndpoint = "/user/signup";
+const loginEndpoint = "/user/login";
+const logoutEndpoint = "/user/logout";
 
 
-describe("login an user -> Endpoint POST /login",()=>{
+describe("login an user -> Endpoint POST user/login",()=>{
     describe("given a user",()=>{
         
 
@@ -38,10 +38,10 @@ describe("login an user -> Endpoint POST /login",()=>{
             
             password = jwtUtils.generateHash(userData.password);
             token = jwtUtils.generateJwt(userData.email);
-            access_token = response.header['set-cookie'][0].split(';')[0].split("=")[1]
+            const accessToken = response.header['set-cookie'][0]
             expect(response.statusCode).toBe(200);
             expect(response.body).toEqual({...userData, password });
-            expect(access_token).not.toBe('');
+            expect(accessToken).toBeDefined();
         })
 
         

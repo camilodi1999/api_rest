@@ -6,9 +6,17 @@ const checkToken = require("../jwt/checkToken");
 const userUtils = require('../utils/userUtils')
 
 
+
+
 const maxAgeToken = 30*1000*60; // 30 min in ms
 /**
- * signup route
+ * signup route to register an user
+ * requires a body with:
+ * name (string)
+ * phone (int)
+ * age (int)
+ * email (string)
+ * password (string)
  */
 router.post('/signup', function(req, res, next) {
   // gets the body from de request
@@ -66,6 +74,9 @@ router.post('/signup', function(req, res, next) {
 
 /**
  * Function for the user login
+ * requires a body with:
+ * email (string)
+ * password (string)
  */
 router.post('/login', function(req, res, next) {
 
@@ -113,12 +124,12 @@ router.post('/login', function(req, res, next) {
  */
 router.post('/logout',function(req, res, next) {
   // expires and remove the token
-  res.cookie("accessed_token","",{ maxAge:0});
+  
+  res.clearCookie('access_token')
   res.send("User log out")
+  
 });
 
-router.post('/restaurants', checkToken,function(req, res, next) {
 
-});
 
 module.exports = router;

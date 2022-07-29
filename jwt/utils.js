@@ -8,20 +8,20 @@ const crypto = require('crypto');
 /**
  * generate the jwt token from the email user and it
  * expires in 30m
- * @param {username} username of the user logged 
+ * @param {string} username of the user logged 
  * @returns token
  */
 
 function generateJwt(email) {
-    const secret_key = config.secret
-    const token = jwt.sign({ email}, secret_key, { expiresIn: "30m" });
+    const secretKey = config.secret
+    const token = jwt.sign({ email}, secretKey, { expiresIn: "30m" });
     return token
   
 };
 
 /**
  * function to generate the password hash
- * @param {*} password 
+ * @param {string} password 
  * @returns password hash
  */
 function generateHash(password) {

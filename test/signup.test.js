@@ -13,9 +13,9 @@ const userData = {
     password: "password"}
 
 
-const signupEndpoint = "/signup";
+const signupEndpoint = "/user/signup";
 
-describe("Register an user -> Endpoint POST /signup",()=>{
+describe("Register an user -> Endpoint POST user/signup",()=>{
     describe("given a user",()=>{
         
         beforeAll(async ()=>{
