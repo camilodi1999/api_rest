@@ -14,7 +14,7 @@ describe("Get historic transactions -> Endpoint get /transactions",()=>{
             await utils.clearTransactions()
         });
         
-        test("Should get a list empty and respond with a 200 status code", async ()=>{
+        test("Should get an empty list and respond with a 200 status code", async ()=>{
 
             const response = await request(app).get(transactionEndpoint).send();
             expect(response.statusCode).toBe(200);
@@ -34,7 +34,7 @@ describe("Get historic transactions -> Endpoint get /transactions",()=>{
             await utils.clearTransactions()
         });
         
-        test("Should get a list of 20 transactions and respond with a 200 status code", async ()=>{
+        test("Should get a list of 10 transactions and respond with a 200 status code", async ()=>{
 
             const response = await request(app).get(transactionEndpoint).send();
             expect(response.statusCode).toBe(200);

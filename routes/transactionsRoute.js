@@ -20,21 +20,24 @@ router.get('/',function(req, res, next) {
   const start = req.query.start;
   const end = req.query.end;
 
+ 
+  let validation = true;
+  if (start && end) {
+    //includes the pagination in the query
+    query.offset = start;
+    query.limit = end;
+    validation = !(isNaN(Number(start)) ||  isNaN(Number(end)))
+    if (!validation) res.status(500).send("the pagination is not valid");
+  }
+  // checks if the user param was passed
+  const user = req.query.user;
+  
+  // includes a where condition in the query
+  if (user) query.where = {user}
+  
   // validates the paginations params 
-  let validation = isNaN(Number(start)) &&  isNaN(Number(end))
-  if (validation) res.status(500).send("the pagination is not valid");
-  else{
-    if (start && end) {
-      //includes the pagination in the query
-      query.offset = start;
-      query.limit = end;
-    }
-    // checks if the user param was passed
-    const user = req.query.user;
-    
-    // includes a where condition in the query
-    if (user) query.where = {user}
-    
+  
+  if (validation){
     // finds the transactions according to the query passed
     Transaction.findAll(query).then(response=>{
       res.send(response);
@@ -42,6 +45,8 @@ router.get('/',function(req, res, next) {
       res.status(500).send("cannot retrieve the transactions: "+ error.message);
     })
   }
+  
+
   
 });
 
