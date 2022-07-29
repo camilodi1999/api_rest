@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config");
 
 /**
- * @returns an error if the user is not authenticated 
+ * @returns an error response if the user is not authenticated 
  */
 function checkToken(req, res, next) {
   

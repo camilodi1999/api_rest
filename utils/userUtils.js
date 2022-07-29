@@ -29,7 +29,7 @@ const schema = Joi.object({
   });
 
 /**
- * deletes the user from the database given its email
+ * deletes the user from the database given its email for test purposes
  * @param {email} email of the user 
  * @throw error if the user doesn't exist
  */

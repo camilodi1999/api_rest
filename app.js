@@ -20,6 +20,13 @@ const usersRouter = require('./routes/usersRoute');
  */
  const restaurantsRouter = require('./routes/restaurantsRoute');
 
+ 
+/**
+ *  transactions route dependency
+ */
+const transactionsRouter = require('./routes/transactionsRoute');
+
+
 /**
  *  creates express app
  */
@@ -35,12 +42,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * Creates the users Router
  */
-const userPath = '/user'
 app.use('/user', usersRouter);
 
 /**
  * Creates the restaurants Router
  */
 app.use('/restaurants', restaurantsRouter);
+
+/**
+ * Creates the restaurants Router
+ */
+app.use('/transactions', transactionsRouter);
+
 
 module.exports = app;
