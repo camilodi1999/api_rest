@@ -30,6 +30,7 @@ describe("Register an user -> Endpoint POST user/signup",()=>{
         
         test("Should register the user and respond with a 200 status code", async ()=>{
             const response = await request(app).post(signupEndpoint).send(userData);
+            // calculate the hash of the password to compare with the one registered
             password = jwtUtils.generateHash(userData.password);
             expect(response.statusCode).toBe(200);
             expect(response.body).toEqual({...userData, password })

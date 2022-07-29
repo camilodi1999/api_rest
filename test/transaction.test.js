@@ -25,11 +25,11 @@ describe("Get historic transactions -> Endpoint get /transactions",()=>{
 
     describe("given transactions",()=>{
         
-        
+        //creates static rows in the database
         beforeAll(async ()=>{
             await utils.poblateTransactions(size);
         })
-
+        //clear the database
         afterAll(async ()=>{
             await utils.clearTransactions()
         });

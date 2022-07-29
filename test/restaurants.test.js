@@ -48,7 +48,7 @@ describe("Get a list of restaurants -> Endpoint GET /restaurants",()=>{
     describe("given an user who is logged in",()=>{
         
         let responseToken = null;
-        // Assures that there is no user logged in
+        // gets an user authenticated
         beforeAll(async ()=>{
             try{
                 responseToken = await request(app).post(signupEndpoint).send(userData);

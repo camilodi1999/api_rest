@@ -35,6 +35,7 @@ describe("logout an user -> Endpoint POST user/logout",()=>{
         })    
 
         test("Should logout the user and respond with a 200 status code and the token is removed", async ()=>{
+            // creates an user to get its cookies and validate the logout later
             const responseCookie = await request(app).post(signupEndpoint).send(userData);
             const response = await request(app).post(logoutEndpoint).set('Cookie',responseCookie.headers['set-cookie']).send();
             expect(response.statusCode).toBe(200);

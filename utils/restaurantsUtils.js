@@ -8,7 +8,9 @@
  */
 function checkCoordinates(lat,lon){
     let check = true;
+    // check if are undefined
     if (lat &&  lon){
+        // check if are numbers
         if (isNaN(Number(lat)))  {
             throw new Error("the latitude is not valid");
         }

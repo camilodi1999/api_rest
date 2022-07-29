@@ -7,8 +7,10 @@ const userUtils = require('../utils/userUtils')
 
 
 
-
+// sets a time for the cookies
 const maxAgeToken = 30*1000*60; // 30 min in ms
+
+
 /**
  * signup route to register an user
  * requires a body with:
@@ -123,8 +125,7 @@ router.post('/login', function(req, res, next) {
  * Logout the user
  */
 router.post('/logout',function(req, res, next) {
-  // expires and remove the token
-  
+  // Clears the token
   res.clearCookie('access_token')
   res.send("User log out")
   

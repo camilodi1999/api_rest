@@ -11,7 +11,7 @@ const userData = {
     email: "email_login@email.com",
     password: "password"}
 
-
+// endpoints required
 const signupEndpoint = "/user/signup";
 const loginEndpoint = "/user/login";
 const logoutEndpoint = "/user/logout";
@@ -20,12 +20,13 @@ const logoutEndpoint = "/user/logout";
 describe("login an user -> Endpoint POST user/login",()=>{
     describe("given a user",()=>{
         
-
+        // creates an user and remove its credentials to test the login
         beforeAll(async ()=>{
             await request(app).post(signupEndpoint).send(userData);
             await request(app).post(logoutEndpoint);
         });
 
+        // log out an delete user
         afterAll(async ()=>{
             await request(app).post(logoutEndpoint);
             await userUtils.deleteUser(userData.email)
@@ -33,11 +34,13 @@ describe("login an user -> Endpoint POST user/login",()=>{
         
 
         test("Should login the user and respond with a 200 status code and the token is set", async ()=>{
+            
+            // request to the login endpoint
             const response = await request(app).post(loginEndpoint).send({
                 email:userData.email,password:userData.password});
-            
+            // calculate hash password to compare the one logged in
             password = jwtUtils.generateHash(userData.password);
-            token = jwtUtils.generateJwt(userData.email);
+            // gets the access token to validate login
             const accessToken = response.header['set-cookie'][0]
             expect(response.statusCode).toBe(200);
             expect(response.body).toEqual({...userData, password });

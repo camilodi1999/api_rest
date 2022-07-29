@@ -7,6 +7,10 @@ const restaurantsUtils = require('../utils/restaurantsUtils');
 
 /**
  * Returns a list of restaurants near to the place or coordinates passed
+ * Params:
+ * place (str) place for the search
+ * lat (number) latitude
+ * lon (number) longitude
  */
 router.get('/', checkToken, async function(req, res, next) {
     // gets the query params
