@@ -16,6 +16,8 @@ To run one should follow these steps (from project root folder)
 
 4. run test: npm test
 
+5. docker image: 
+    - docker pull camilodiaz1999/node-restapi-test
 ## Endpoints
 
 1. POST /user/signup : parameters = {String name, integer phone, integer age, string email, string password }

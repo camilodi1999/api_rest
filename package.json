@@ -4,11 +4,12 @@
   "description": "Tyba Engineer test",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "test": "jest"
   },
   "author": "Edgar Camilo Diaz Suarez",
   "dependencies": {
+    "axios": "^0.27.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",
